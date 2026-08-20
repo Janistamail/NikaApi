@@ -1,6 +1,6 @@
-using NikaApi.Data;
+using NikaApi.Services;
+using NikaApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace NikaApi.Controllers;
 
@@ -8,18 +8,39 @@ namespace NikaApi.Controllers;
 [Route("api/[controller]")]
 public class CategoriesController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly ICategoryService _categoryService;
 
-    public CategoriesController(AppDbContext context)
+    public CategoriesController(ICategoryService categoryService)
     {
-        _context = context;
+        _categoryService = categoryService;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetCategories()
     {
-        var categories = await _context.Categories.ToListAsync();
+        var categories = await _categoryService.GetCategoriesAsync();
 
         return Ok(categories);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetCategoryById(int id)
+    {
+        var category = await _categoryService.GetCategoryByIdAsync(id);
+
+        if (category is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(category);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateCategory(Category category)
+    {
+        var createdCategory = await _categoryService.CreateCategoryAsync(category);
+
+        return CreatedAtAction(nameof(GetCategoryById), new { id = createdCategory.Id }, createdCategory);
     }
 }
