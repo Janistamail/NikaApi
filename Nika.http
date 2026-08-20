@@ -1,0 +1,6 @@
+@Nika_HostAddress = http://localhost:5167
+
+GET {{Nika_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
