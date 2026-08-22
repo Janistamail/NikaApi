@@ -1,5 +1,6 @@
 using NikaApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using NikaApi.DTOs.Products;
 
 namespace NikaApi.Controllers;
 
@@ -28,5 +29,11 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
+    [HttpPost]
+    public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest request)
+    {
+        var product = await _productService.CreateProductAsync(request);
+        return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
+    }
 
 }
