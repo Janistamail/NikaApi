@@ -7,7 +7,8 @@ public class ProductImage
 
     public string ImageUri { get; set; } = null!;
 
-    public int SortOrder { get; set; }
 
+    public int SortOrder { get; set; }
     public int ProductId { get; set; } //FK, Index
 }
+

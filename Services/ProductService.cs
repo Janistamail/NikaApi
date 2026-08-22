@@ -18,6 +18,7 @@ public class ProductService : IProductService
     {
         return await _context.Products
             .Include(p => p.Category)
+            .Include(p => p.Images)
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 
